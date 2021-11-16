@@ -15,14 +15,14 @@ df = pd.read_csv("data_processed.csv")
 
 #### Get features ready to model! 
 y = df.pop("cons_general").to_numpy()
-y[y< 4] = 0
-y[y>= 4] = 1
+y[y<= 4] = 0
+y[y> 4] = 1
 
 X = df.to_numpy()
 X = preprocessing.scale(X) # Is standard
 # Impute NaNs
 
-imp = SimpleImputer(missing_values=np.nan, strategy='mean')
+imp = SimpleImputer(missing_values=np.nan, strategy='median')
 imp.fit(X)
 X = imp.transform(X)
 
