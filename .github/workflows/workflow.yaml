@@ -7,6 +7,7 @@ jobs:
       - uses: iterative/setup-cml@v1
       - uses: actions/checkout@v2
       - name: Deploy runner on AZVM
+      
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -43,6 +44,8 @@ jobs:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           AZ_CS: ${{ secrets.CONN_STR_AZDLAT }}
         run: |
+          npm rebuild bcrypt --update-binary
+          
           pip install wget
           pip install sklearn
           pip install pandas
@@ -57,12 +60,12 @@ jobs:
           
           echo "fetched data"
           
+          
           dvc pull
           dvc repro
           
           git fetch --prune
-		  
-          dvc metrics diff --show-md main >> report.md
+          dvc metrics diff --show-md main > report.md
                     
           echo "## Metrics"
           cat metrics.json
